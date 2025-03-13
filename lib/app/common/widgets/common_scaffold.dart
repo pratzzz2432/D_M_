@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:d_m/app/modules/login_page.dart';
 
 class CommonScaffold extends StatelessWidget {
   final Widget body;
@@ -7,15 +10,15 @@ class CommonScaffold extends StatelessWidget {
   final String profileImageUrl;
 
   static const IconData accountCircleOutlined =
-  IconData(0xee35, fontFamily: 'MaterialIcons');
+      IconData(0xee35, fontFamily: 'MaterialIcons');
 
   const CommonScaffold({
-    Key? key,
+    super.key,
     required this.body,
     this.title = '',
     this.currentIndex = 0,
     this.profileImageUrl = 'https://via.placeholder.com/150',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +100,7 @@ class CommonScaffold extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Container(
               padding: const EdgeInsets.all(8), // Makes the icon bigger
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFFB01629),
                 shape: BoxShape.circle,
               ),
@@ -115,7 +118,7 @@ class CommonScaffold extends StatelessWidget {
           ),
         ],
       ),
-    ); 
+    );
   }
 
   // Build the drawer
@@ -208,21 +211,40 @@ class CommonScaffold extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-            Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
-           },
+              Navigator.pushNamed(context, '/ai_chatbot'); // Navigate to chatbot page
+            },
           ),
           const Divider(color: Colors.white30),
+          
+          // 🔴 FUNCTIONAL LOGOUT BUTTON ✅
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
             title: const Text(
               "Logout",
               style: TextStyle(color: Colors.red),
             ),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Signed Out')),
-              );
+            onTap: () async {
+              Navigator.pop(context); // Close drawer first
+
+              try {
+                // Sign out from Firebase
+                await FirebaseAuth.instance.signOut();
+
+                // Clear user login session from SharedPreferences
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('isLoggedIn', false);
+
+                // Navigate to login page
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } catch (e) {
+                // Show error if logout fails
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Error logging out: $e")),
+                );
+              }
             },
           ),
         ],

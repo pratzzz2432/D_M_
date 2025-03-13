@@ -11,6 +11,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  firebase_core: ^3.4.1
+  firebase_auth: ^5.5.1   # Firebase Authentication
+  google_sign_in: ^6.2.1   # Google Sign-In SDK
+  cloud_firestore: ^5.6.5 # Firestore (if you're storing user details)
+  firebase_analytics: ^11.4.4 # Google Analytics for Firebase
   get: ^4.7.2
   provider: ^6.1.2
   flutter_gemini: ^3.0.0
