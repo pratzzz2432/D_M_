@@ -46,7 +46,7 @@ dependencies:
 
   location: ^8.0.0
   dio: ^5.8.0+1
-  google_maps_flutter: ^2.11.0
+  
 
 
 
