@@ -1,3 +1,4 @@
+import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:d_m/app/common/widgets/common_scaffold.dart';
@@ -71,79 +72,79 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
         .snapshots()
         .listen(
           (snapshot) {
-            if (snapshot.docs.isEmpty) {
-              print("⚠️ No refugee camps found.");
-            } else {
-              Set<Marker> tempMarkers = {};
-              tempMarkers.add(
-                Marker(
-                  markerId: MarkerId('userLocation'),
-                  position: _currentPosition ?? LatLng(20.5937, 78.9629),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueBlue,
-                  ),
-                  infoWindow: InfoWindow(title: 'Your Location'),
-                ),
+        if (snapshot.docs.isEmpty) {
+          print("⚠️ No refugee camps found.");
+        } else {
+          Set<Marker> tempMarkers = {};
+          tempMarkers.add(
+            Marker(
+              markerId: MarkerId('userLocation'),
+              position: _currentPosition ?? LatLng(20.5937, 78.9629),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueBlue,
+              ),
+              infoWindow: InfoWindow(title: 'Your Location'),
+            ),
+          );
+
+          for (var camp in snapshot.docs) {
+            var data = camp.data();
+            if (data.containsKey('location') &&
+                data['location'] is GeoPoint) {
+              GeoPoint geoPoint = data['location'];
+              LatLng campPosition = LatLng(
+                geoPoint.latitude,
+                geoPoint.longitude,
               );
 
-              for (var camp in snapshot.docs) {
-                var data = camp.data();
-                if (data.containsKey('location') &&
-                    data['location'] is GeoPoint) {
-                  GeoPoint geoPoint = data['location'];
-                  LatLng campPosition = LatLng(
-                    geoPoint.latitude,
-                    geoPoint.longitude,
-                  );
+              // Calculate dummy ETA
+              String eta = _getDummyETA(_currentPosition, campPosition);
 
-                  // Calculate dummy ETA
-                  String eta = _getDummyETA(_currentPosition, campPosition);
+              // Add camp marker with tap listener
+              tempMarkers.add(
+                Marker(
+                  markerId: MarkerId(data['name']),
+                  position: campPosition,
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueRed,
+                  ),
+                  infoWindow: InfoWindow(
+                    title: data['name'],
+                    snippet: "Capacity: ${data['capacity']}",
+                    onTap: () {
+                      _launchGoogleMapsNavigation(campPosition);
+                    },
+                  ),
+                  onTap: () {
+                    if (_currentPosition != null) {
+                      // Draw route when camp marker is tapped
+                      _drawRoute(_currentPosition!, campPosition);
 
-                  // Add camp marker with tap listener
-                  tempMarkers.add(
-                    Marker(
-                      markerId: MarkerId(data['name']),
-                      position: campPosition,
-                      icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRed,
-                      ),
-                      infoWindow: InfoWindow(
-                        title: data['name'],
-                        snippet: "Capacity: ${data['capacity']}",
-                        onTap: () {
-                          _launchGoogleMapsNavigation(campPosition);
-                        },
-                      ),
-                      onTap: () {
-                        if (_currentPosition != null) {
-                          // Draw route when camp marker is tapped
-                          _drawRoute(_currentPosition!, campPosition);
+                      // Show the camp details dialog
+                      _showCampDetails(data, campPosition);
 
-                          // Show the camp details dialog
-                          _showCampDetails(data, campPosition);
-
-                          // Update InfoWindow
-                          _mapController?.showMarkerInfoWindow(
-                            MarkerId(data['name']),
-                          );
-                        }
-                      },
-                    ),
-                  );
-                }
-              }
-
-              setState(() {
-                _markers = tempMarkers;
-              });
-
-              print("✅ Real-time camps updated: ${tempMarkers.length}");
+                      // Update InfoWindow
+                      _mapController?.showMarkerInfoWindow(
+                        MarkerId(data['name']),
+                      );
+                    }
+                  },
+                ),
+              );
             }
-          },
-          onError: (e) {
-            print("❌ Firestore Error: $e");
-          },
-        );
+          }
+
+          setState(() {
+            _markers = tempMarkers;
+          });
+
+          print("✅ Real-time camps updated: ${tempMarkers.length}");
+        }
+      },
+      onError: (e) {
+        print("❌ Firestore Error: $e");
+      },
+    );
   }
 
   /// ✅ Step 4: Move camera to user location after fetching
@@ -314,11 +315,11 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
     var c = cos;
     var a =
         0.5 -
-        c((point2.latitude - point1.latitude) * p) / 2 +
-        c(point1.latitude * p) *
-            c(point2.latitude * p) *
-            (1 - c((point2.longitude - point1.longitude) * p)) /
-            2;
+            c((point2.latitude - point1.latitude) * p) / 2 +
+            c(point1.latitude * p) *
+                c(point2.latitude * p) *
+                (1 - c((point2.longitude - point1.longitude) * p)) /
+                2;
     return 12742 * asin(sqrt(a)); // 2 * R; R = 6371 km
   }
 
@@ -330,7 +331,7 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(campData['name'] ?? 'Camp Details'),
+          title: TranslatableText(campData['name'] ?? 'Camp Details'),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -357,7 +358,7 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
                 ),
                 SizedBox(height: 16),
                 ElevatedButton(
-                  child: Text("Navigation"),
+                  child: TranslatableText("Navigation"),
                   onPressed: () {
                     // Close the dialog
                     Navigator.pop(context);
@@ -371,7 +372,7 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
           ),
           actions: [
             TextButton(
-              child: Text("Close"),
+              child: TranslatableText("Close"),
               onPressed: () => Navigator.pop(context),
             ),
           ],
@@ -387,14 +388,14 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          TranslatableText(
             label,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: const Color.fromARGB(255, 91, 99, 106),
             ),
           ),
-          Text(value),
+          TranslatableText(value),
           Divider(height: 8),
         ],
       ),
@@ -404,23 +405,23 @@ class _RefugeeCampMapState extends State<RefugeeCampMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Refugee Camps")),
+      appBar: AppBar(title: TranslatableText("Refugee Camps")),
       body:
-          _locationPermissionGranted
-              ? GoogleMap(
-                onMapCreated: (controller) {
-                  _mapController = controller;
-                },
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(24.8108, 93.9386), // Default position (India)
-                  zoom: 4,
-                ),
-                markers: _markers,
-                polylines: _polylines,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: true,
-              )
-              : Center(child: Text("Please grant location permissions.")),
+      _locationPermissionGranted
+          ? GoogleMap(
+        onMapCreated: (controller) {
+          _mapController = controller;
+        },
+        initialCameraPosition: CameraPosition(
+          target: LatLng(24.8108, 93.9386), // Default position (India)
+          zoom: 4,
+        ),
+        markers: _markers,
+        polylines: _polylines,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+      )
+          : Center(child: TranslatableText("Please grant location permissions.")),
 
     );
   }

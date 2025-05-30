@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,7 +35,7 @@ class _SOSPageState extends State<SOSPage> {
     List<String> tokens = [];
     try {
       QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('FCM_TOKENS').get();
+      await FirebaseFirestore.instance.collection('FCM_TOKENS').get();
       for (var doc in snapshot.docs) {
         tokens.add(doc['token']); // 🔹 Assuming 'token' is the field name
       }
@@ -111,7 +112,7 @@ class _SOSPageState extends State<SOSPage> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('🚨 SOS Alert Sent! Help is on the way.')),
+      const SnackBar(content: TranslatableText('🚨 SOS Alert Sent! Help is on the way.')),
     );
   }
 
@@ -120,14 +121,14 @@ class _SOSPageState extends State<SOSPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("SOS Emergency"),
+        title: const TranslatableText("SOS Emergency"),
         backgroundColor: Colors.red,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            const TranslatableText(
               "🔴 Emergency SOS",
               style: TextStyle(
                 fontSize: 24,
@@ -146,15 +147,15 @@ class _SOSPageState extends State<SOSPage> {
                 ),
               ),
               child:
-                  _isSending
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                        "SEND SOS",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
+              _isSending
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const TranslatableText(
+                "SEND SOS",
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
             ),
             const SizedBox(height: 20),
-            const Text(
+            const TranslatableText(
               "📡 Your SOS alert will be sent to the nearest rescue team.",
               style: TextStyle(fontSize: 14, color: Colors.white70),
               textAlign: TextAlign.center,

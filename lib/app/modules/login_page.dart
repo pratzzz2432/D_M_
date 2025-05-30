@@ -1,3 +1,4 @@
+import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'package:d_m/app/modules/civilian_dashboard/views/civilian_dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +21,7 @@ class LoginPageState extends State<LoginPage> {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please fill in all fields.'),
+          content: TranslatableText('Please fill in all fields.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -29,7 +30,7 @@ class LoginPageState extends State<LoginPage> {
     if (!_emailController.text.contains('@')) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter a valid email address.'),
+          content: TranslatableText('Please enter a valid email address.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -70,7 +71,7 @@ class LoginPageState extends State<LoginPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
+        SnackBar(content: TranslatableText(errorMessage), backgroundColor: Colors.red),
       );
     } finally {
       if (mounted) {
@@ -111,7 +112,7 @@ class LoginPageState extends State<LoginPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
+        SnackBar(content: TranslatableText(errorMessage), backgroundColor: Colors.red),
       );
     } finally {
       if (mounted) {
@@ -132,7 +133,7 @@ class LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              const TranslatableText(
                 'Welcome to Aapda-Sanrakshan',
                 style: TextStyle(
                   color: Colors.black,
@@ -182,18 +183,18 @@ class LoginPageState extends State<LoginPage> {
               _isLoading
                   ? CircularProgressIndicator()
                   : Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: _isLoading ? null : _signIn,
-                        child: const Text('Login'),
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _isLoading ? null : _signUp,
-                        child: const Text('Sign Up'),
-                      ),
-                    ],
+                children: [
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _signIn,
+                    child: const TranslatableText('Login'),
                   ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _signUp,
+                    child: const TranslatableText('Sign Up'),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

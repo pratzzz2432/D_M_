@@ -1,3 +1,4 @@
+import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,16 +19,16 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController emergencyNameController = TextEditingController();
   final TextEditingController emergencyContactController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController abhaIdController = TextEditingController();
   final TextEditingController otherMedicalHistoryController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController otherAllergiesController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController otherMedicationsController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController otherDisabilitiesController =
-      TextEditingController();
+  TextEditingController();
 
   String? selectedBloodGroup;
   String? selectedEmergencyRelation;
@@ -188,7 +189,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: Text('Complete Profile', style: TextStyle(color: Colors.white)),
+        title: TranslatableText('Complete Profile', style: TextStyle(color: Colors.white)),
         backgroundColor: accentColor,
         centerTitle: true,
       ),
@@ -204,19 +205,19 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
               keyboardType: TextInputType.number,
             ),
             buildDropdownField("Blood Group", bloodGroups, selectedBloodGroup, (
-              value,
-            ) {
+                value,
+                ) {
               setState(() => selectedBloodGroup = value);
             }),
             buildTextField("ABHA ID", abhaIdController),
 
-            Text("Emergency Contact", style: sectionTitleStyle()),
+            TranslatableText("Emergency Contact", style: sectionTitleStyle()),
             buildTextField("Name", emergencyNameController),
             buildDropdownField(
               "Relation",
               emergencyRelations,
               selectedEmergencyRelation,
-              (value) {
+                  (value) {
                 setState(() => selectedEmergencyRelation = value);
               },
             ),
@@ -256,7 +257,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
               child: ElevatedButton(
                 onPressed: _saveProfileData,
                 style: ElevatedButton.styleFrom(backgroundColor: accentColor),
-                child: Text(
+                child: TranslatableText(
                   'Save Profile',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -269,10 +270,10 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   }
 
   Widget buildTextField(
-    String label,
-    TextEditingController controller, {
-    TextInputType keyboardType = TextInputType.text,
-  }) {
+      String label,
+      TextEditingController controller, {
+        TextInputType keyboardType = TextInputType.text,
+      }) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.0),
       child: TextField(
@@ -289,19 +290,19 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   }
 
   Widget buildDropdownField(
-    String label,
-    List<String> items,
-    String? selectedValue,
-    ValueChanged<String?> onChanged,
-  ) {
+      String label,
+      List<String> items,
+      String? selectedValue,
+      ValueChanged<String?> onChanged,
+      ) {
     return Padding(
       padding: EdgeInsets.only(bottom: 12.0),
       child: DropdownButtonFormField<String>(
         value: selectedValue,
         items:
-            items
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
+        items
+            .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+            .toList(),
         onChanged: onChanged,
         decoration: InputDecoration(
           labelText: label,
@@ -314,16 +315,16 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   }
 
   Widget buildMultiSelectField(
-    String label,
-    List<String> items,
-    List<String> selectedValues,
-    TextEditingController otherController,
-  ) {
+      String label,
+      List<String> items,
+      List<String> selectedValues,
+      TextEditingController otherController,
+      ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MultiSelectDialogField(
-          title: Text(label),
+          title: TranslatableText(label),
           buttonText: Text("Select $label"),
           items: items.map((e) => MultiSelectItem<String>(e, e)).toList(),
           initialValue: selectedValues,

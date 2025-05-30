@@ -31,11 +31,11 @@ class CommonScaffold extends StatelessWidget {
         leading: Builder(
           builder:
               (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer(); // Open the drawer
-                },
-              ),
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer(); // Open the drawer
+            },
+          ),
         ),
         actions: [
           IconButton(
@@ -86,7 +86,7 @@ class CommonScaffold extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/civilian_dashboard',
-                (route) => false,
+                    (route) => false,
               );
               break;
             case 1:

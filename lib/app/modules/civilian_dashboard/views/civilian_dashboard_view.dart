@@ -24,9 +24,9 @@ class CivilianDashboardView extends StatelessWidget {
     bool riskFree = isRiskFree();
     Color riskCardColor = riskFree ? Colors.green[100]! : Colors.red[100]!;
     String riskText =
-        riskFree
-            ? "You are in a Risk-Free Zone"
-            : "You are in a High-Risk Zone!";
+    riskFree
+        ? "You are in a Risk-Free Zone"
+        : "You are in a High-Risk Zone!";
     Color riskTextColor = riskFree ? Colors.green[900]! : Colors.red[900]!;
 
     return CommonScaffold(
@@ -71,7 +71,7 @@ class CivilianDashboardView extends StatelessWidget {
                         size: 32,
                       ),
                       const SizedBox(width: 8),
-                      Text(
+                      TranslatableText(
                         riskText,
                         style: TextStyle(
                           color: riskTextColor,
@@ -185,7 +185,7 @@ class CivilianDashboardView extends StatelessWidget {
                                   arguments: {
                                     'author': 'Disaster Response team',
                                     'content':
-                                        'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
+                                    'A 6.2 magnitude earthquake struck Manipur today. Relief camps are being set up. Stay alert and follow safety protocols.',
                                   },
                                 );
                               },

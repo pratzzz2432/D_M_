@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:d_m/providers/language_provider.dart';
 import 'package:d_m/services/translation_service.dart';
+import 'package:provider/provider.dart';
+import 'package:d_m/providers/language_provider.dart'; // ✅ Adjust the path if needed
+
+
 
 class LanguageSelectionDialog extends StatelessWidget {
-  const LanguageSelectionDialog({Key? key}) : super(key: key);
+  const LanguageSelectionDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final languageProvider = Provider.of<LanguageProvider>(context, listen: false);
-
     return AlertDialog(
       title: const Text('Select Language'),
       content: SizedBox(
@@ -20,18 +20,32 @@ class LanguageSelectionDialog extends StatelessWidget {
           itemBuilder: (context, index) {
             final language = TranslationService.availableLanguages[index];
             return ListTile(
-              title: Text(language.name),
-              trailing: languageProvider.currentLanguage == language.code
-                  ? const Icon(Icons.check, color: Colors.green)
-                  : null,
-              onTap: () {
-                TranslationService.setLanguage(language.code);
+              title: Row(
+                children: [
+                  Text(language.name), // Native script
+                  const SizedBox(width: 8),
+                  Text(
+                    '(${language.englishName})', // English name
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+              onTap: () async {
+                final provider = Provider.of<LanguageProvider>(context, listen: false);
+                await provider.changeLanguage(language.code);
                 Navigator.pop(context);
               },
+
             );
           },
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Close'),
+        ),
+      ],
     );
   }
 }

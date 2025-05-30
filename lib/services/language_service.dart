@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class LanguageService {
-  static const String apiKey = "YOUR_GOOGLE_API_KEY"; // Replace with your API key
+  static const String apiKey = "AIzaSyDx5jUKoJPNoeKSjbLcaCqMGrpVHErGhq0"; // Replace with your API key
 
   static Future<String> translateText(String text, String targetLang) async {
     final url =

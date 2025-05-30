@@ -1,3 +1,4 @@
+import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,7 +67,7 @@ Disabilities - XXXXXXXXXX
       Share.share(qrData!, subject: "My Medical QR Code");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Complete your profile to share QR Code")),
+        SnackBar(content: TranslatableText("Complete your profile to share QR Code")),
       );
     }
   }
@@ -110,7 +111,7 @@ Disabilities - XXXXXXXXXX
       backgroundColor: communityBackground,
       appBar: AppBar(
         backgroundColor: accentColor,
-        title: Text('Profile', style: TextStyle(color: Colors.white)),
+        title: TranslatableText('Profile', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -128,7 +129,7 @@ Disabilities - XXXXXXXXXX
                     child: Icon(Icons.person, size: 50, color: Colors.white70),
                   ),
                   SizedBox(height: 10),
-                  Text(
+                  TranslatableText(
                     userName,
                     style: TextStyle(
                       fontSize: 22,
@@ -161,9 +162,9 @@ Disabilities - XXXXXXXXXX
                         onPressed: _navigateToCompleteProfile,
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              isProfileComplete ? Colors.orange : accentColor,
+                          isProfileComplete ? Colors.orange : accentColor,
                         ),
-                        child: Text(
+                        child: TranslatableText(
                           isProfileComplete
                               ? 'Edit Profile'
                               : 'Complete Profile',
@@ -186,7 +187,7 @@ Disabilities - XXXXXXXXXX
                       backgroundColor: accentColor,
                     ),
                     icon: Icon(Icons.info, color: Colors.white),
-                    label: Text(
+                    label: TranslatableText(
                       "View Medical Details",
                       style: TextStyle(color: Colors.white),
                     ),
@@ -198,7 +199,7 @@ Disabilities - XXXXXXXXXX
                       backgroundColor: accentColor,
                     ),
                     icon: Icon(Icons.share, color: Colors.white),
-                    label: Text(
+                    label: TranslatableText(
                       "Share QR Code",
                       style: TextStyle(color: Colors.white),
                     ),
@@ -212,7 +213,7 @@ Disabilities - XXXXXXXXXX
                 children: [
                   ListTile(
                     leading: Icon(Icons.groups, color: Colors.black),
-                    title: Text('Community'),
+                    title: TranslatableText('Community'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -245,7 +246,7 @@ Disabilities - XXXXXXXXXX
                           height: 28, // Set the height
                         ),
                         SizedBox(width: 10), // Space between image and text
-                        Text(
+                        TranslatableText(
                           'E-Sahyog',
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
@@ -256,7 +257,7 @@ Disabilities - XXXXXXXXXX
                   SizedBox(height: 10),
                   ListTile(
                     leading: Icon(Icons.settings, color: Colors.black),
-                    title: Text('Settings'),
+                    title: TranslatableText('Settings'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -266,7 +267,7 @@ Disabilities - XXXXXXXXXX
                   SizedBox(height: 10),
                   ListTile(
                     leading: Icon(Icons.help_outline, color: Colors.black),
-                    title: Text('Help & Support'),
+                    title: TranslatableText('Help & Support'),
                     tileColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

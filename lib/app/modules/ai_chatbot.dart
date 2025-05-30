@@ -1,3 +1,4 @@
+import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -241,7 +242,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                             ),
                           );
                         },
-                        child: Text(
+                        child: TranslatableText(
                           _customPrompts[index],
                           style: const TextStyle(fontSize: 13),
                         ),

@@ -1,20 +1,27 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:d_m/services/translation_service.dart';
 
 class LanguageProvider extends ChangeNotifier {
-  String _currentLanguage = 'en'; // Default language
+  String _languageCode = 'en';
 
-  String get currentLanguage => _currentLanguage;
+  String get languageCode => _languageCode;
 
-  void setLanguage(String languageCode) {
-    _currentLanguage = languageCode;
-    TranslationService.setLanguage(languageCode);
+  LanguageProvider() {
+    _loadSavedLanguage();
+  }
+
+  Future<void> _loadSavedLanguage() async {
+    _languageCode = await TranslationService.getCurrentLanguage();
     notifyListeners();
   }
 
-  // Added this method to fix the error in TranslatableText widget
+  Future<void> changeLanguage(String newCode) async {
+    await TranslationService.setLanguage(newCode);
+    _languageCode = newCode;
+    notifyListeners();
+  }
+
   Future<String> translateText(String text) async {
-    // Use TranslationService to translate the text
-    return await TranslationService.translateText(text, _currentLanguage);
+    return await TranslationService.translateText(text, _languageCode);
   }
 }

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
+import 'package:d_m/app/common/widgets/translatable_text.dart';
+import 'package:d_m/services/translation_service.dart';
+import 'package:provider/provider.dart';
+import 'package:d_m/providers/language_provider.dart'; // ✅ Adjust the path if needed
+
+
 
 class CommonScaffold extends StatelessWidget {
   final String title;
@@ -12,7 +19,7 @@ class CommonScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title, style: const TextStyle(color: Colors.white)),
+        title: TranslatableText(title, style: const TextStyle(color: Colors.white)),
         backgroundColor: primaryColor,
         centerTitle: true,
       ),
@@ -80,11 +87,11 @@ class CallPage extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 6),
             child: ListTile(
               leading: Icon(contact['icon'], size: 32, color: primaryColor),
-              title: Text(
+              title: TranslatableText(
                 contact['name'],
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(
+              subtitle: TranslatableText(
                 contact['number'],
                 style: const TextStyle(fontSize: 14, color: Colors.black87),
               ),

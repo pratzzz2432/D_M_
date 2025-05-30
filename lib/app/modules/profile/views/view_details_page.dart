@@ -1,3 +1,4 @@
+import 'package:d_m/app/common/widgets/translatable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,7 +58,7 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        title: Text("Medical Details", style: TextStyle(color: Colors.white)),
+        title: TranslatableText("Medical Details", style: TextStyle(color: Colors.white)),
         backgroundColor: accentColor,
         centerTitle: true,
       ),
@@ -67,7 +68,7 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Personal Information", style: sectionTitleStyle()),
+              TranslatableText("Personal Information", style: sectionTitleStyle()),
               SizedBox(height: 10),
               buildInfoTile("Name", name),
               buildInfoTile("Age", age),
@@ -75,14 +76,14 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
               buildInfoTile("ABHA ID", abhaId),
 
               SizedBox(height: 20),
-              Text("Emergency Contact", style: sectionTitleStyle()),
+              TranslatableText("Emergency Contact", style: sectionTitleStyle()),
               SizedBox(height: 10),
               buildInfoTile("Name", emergencyName),
               buildInfoTile("Relation", emergencyRelation),
               buildInfoTile("Phone Number", emergencyContact),
 
               SizedBox(height: 20),
-              Text("Medical Details", style: sectionTitleStyle()),
+              TranslatableText("Medical Details", style: sectionTitleStyle()),
               SizedBox(height: 10),
               buildInfoTile("Medical History", formatList(medicalHistory)),
               buildInfoTile("Allergies", formatList(allergies)),
@@ -97,7 +98,7 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
                   },
                   style: ElevatedButton.styleFrom(backgroundColor: accentColor),
                   icon: Icon(Icons.arrow_back, color: Colors.white),
-                  label: Text(
+                  label: TranslatableText(
                     "Back to Profile",
                     style: TextStyle(color: Colors.white),
                   ),
@@ -116,11 +117,11 @@ class _ViewDetailsPageState extends State<ViewDetailsPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 3,
       child: ListTile(
-        title: Text(
+        title: TranslatableText(
           title,
           style: TextStyle(fontWeight: FontWeight.bold, color: accentColor),
         ),
-        subtitle: Text(value ?? "N/A", style: TextStyle(fontSize: 16)),
+        subtitle: TranslatableText(value ?? "N/A", style: TextStyle(fontSize: 16)),
       ),
     );
   }

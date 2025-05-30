@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:d_m/app/common/widgets/common_scaffold.dart';
+import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
+import 'package:d_m/app/common/widgets/translatable_text.dart';
+import 'package:d_m/services/translation_service.dart';
+import 'package:provider/provider.dart';
+import 'package:d_m/providers/language_provider.dart'; // ✅ Adjust the path if needed
+
 
 class UserGuidePage extends StatelessWidget {
   const UserGuidePage({super.key});
@@ -25,7 +31,7 @@ class UserGuidePage extends StatelessWidget {
               ),
               child: ListTile(
                 leading: Icon(icon, size: 30, color: Color(0xFF5F6898)),
-                title: Text(
+                title: TranslatableText(
                   category,
                   style: TextStyle(
                     fontSize: 18,
@@ -73,7 +79,7 @@ class DisasterDetailPage extends StatelessWidget {
           children: [
             SizedBox(height: 16),
 
-            Text(
+            TranslatableText(
               '🌍 Causes:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -81,10 +87,13 @@ class DisasterDetailPage extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            Text(disasterInfo['causes'] ?? '', style: TextStyle(fontSize: 16)),
+            TranslatableText(
+                disasterInfo['causes'] ?? '',
+                style: TextStyle(fontSize: 16)
+            ),
             SizedBox(height: 12),
 
-            Text(
+            TranslatableText(
               '✅ To-Do List:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -93,7 +102,7 @@ class DisasterDetailPage extends StatelessWidget {
               ),
             ),
             ...disasterInfo['do']!.map(
-              (item) => Padding(
+                  (item) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
@@ -103,14 +112,19 @@ class DisasterDetailPage extends StatelessWidget {
                       size: 18,
                     ),
                     SizedBox(width: 8),
-                    Expanded(child: Text(item, style: TextStyle(fontSize: 16))),
+                    Expanded(
+                        child: TranslatableText(
+                            item,
+                            style: TextStyle(fontSize: 16)
+                        )
+                    ),
                   ],
                 ),
               ),
             ),
             SizedBox(height: 12),
 
-            Text(
+            TranslatableText(
               "❌ Don'ts:",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -119,13 +133,18 @@ class DisasterDetailPage extends StatelessWidget {
               ),
             ),
             ...disasterInfo['dont']!.map(
-              (item) => Padding(
+                  (item) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
                     Icon(Icons.cancel, color: Colors.red[700], size: 18),
                     SizedBox(width: 8),
-                    Expanded(child: Text(item, style: TextStyle(fontSize: 16))),
+                    Expanded(
+                        child: TranslatableText(
+                            item,
+                            style: TextStyle(fontSize: 16)
+                        )
+                    ),
                   ],
                 ),
               ),
@@ -141,7 +160,7 @@ class DisasterDetailPage extends StatelessWidget {
                   }
                 },
                 icon: Icon(Icons.video_library),
-                label: Text('Watch Training Video'),
+                label: TranslatableText('Watch Training Video'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   foregroundColor: Colors.white,
@@ -156,8 +175,8 @@ class DisasterDetailPage extends StatelessWidget {
     );
   }
 }
-// Disaster Categories
 
+// Disaster Categories
 Map<String, IconData> disasterCategories = {
   'Earthquake': Icons.house, // Represents home safety
   'Flood': Icons.water, // Represents water-related disasters
@@ -167,7 +186,7 @@ Map<String, IconData> disasterCategories = {
   'Landslide': Icons.terrain, // Represents ground movement
   'Pandemic': Icons.health_and_safety, // Represents health-related disasters
   'Industrial Accidents':
-      Icons.factory, // Represents factory and chemical hazards
+  Icons.factory, // Represents factory and chemical hazards
   'Nuclear Disasters': Icons.volcano, // Represents radioactive hazards
   'Drought': Icons.cloud_off, // Represents water scarcity
   'Terrorist Attacks': Icons.dangerous, // Represents threats to security
@@ -184,18 +203,18 @@ Map<String, IconData> disasterCategories = {
   'Train Accidents': Icons.train, // Represents rail transport hazards
   'Airplane Crash': Icons.flight, // Represents aviation disasters
   'Bridge Collapse':
-      Icons.horizontal_rule_rounded, // Represents infrastructure failure
+  Icons.horizontal_rule_rounded, // Represents infrastructure failure
   'Forest Fire': Icons.forest, // Represents wildfires
   'Dam Failure': Icons.flood_sharp, // Represents water infrastructure failure
   'Avalanche': Icons.snowing, // Represents falling snow disasters
   'Electrocution': Icons.electric_bolt, // Represents electrical hazards
 };
 
-// Disaster-Specific Do’s, Don'ts, and Video Links
+// Disaster-Specific Do's, Don'ts, and Video Links
 Map<String, Map<String, dynamic>> disasterDetails = {
   'Earthquake': {
     'causes':
-        "Earthquakes occur due to sudden movements in the Earth's crust, mainly caused by tectonic plate shifts along fault lines. These movements generate seismic waves, leading to ground shaking. The most common causes of earthquakes include:\n\n- **Tectonic Activity**: The Earth's crust is divided into plates that constantly move. When stress builds up at the plate boundaries, it is released as an earthquake.\n- **Volcanic Eruptions**: Underground magma movement can trigger earthquakes near active volcanoes.\n- **Human Activities**: Mining, fracking, dam construction, and underground nuclear tests can induce seismic activity.\n- **Subduction Zones**: When one tectonic plate slides beneath another, intense pressure builds up, eventually causing massive quakes, often leading to tsunamis.",
+    "Earthquakes occur due to sudden movements in the Earth's crust, mainly caused by tectonic plate shifts along fault lines. These movements generate seismic waves, leading to ground shaking. The most common causes of earthquakes include:\n\n- **Tectonic Activity**: The Earth's crust is divided into plates that constantly move. When stress builds up at the plate boundaries, it is released as an earthquake.\n- **Volcanic Eruptions**: Underground magma movement can trigger earthquakes near active volcanoes.\n- **Human Activities**: Mining, fracking, dam construction, and underground nuclear tests can induce seismic activity.\n- **Subduction Zones**: When one tectonic plate slides beneath another, intense pressure builds up, eventually causing massive quakes, often leading to tsunamis.",
     'do': [
       "Secure heavy furniture and appliances to prevent them from toppling.",
       "Identify safe spots in your home, such as under sturdy tables or against interior walls.",
@@ -210,7 +229,7 @@ Map<String, Map<String, dynamic>> disasterDetails = {
     ],
     'dont': [
       "Do not use elevators during or after an earthquake.",
-      "Do not rush outside if you’re in a high-rise building; use stairs after the shaking stops.",
+      "Do not rush outside if you're in a high-rise building; use stairs after the shaking stops.",
       "Do not light matches or candles immediately after a quake, as gas leaks may cause explosions.",
       "Do not stand under doorways, as they are no longer the safest places in modern buildings.",
       "Do not spread unverified information or rumors that could cause panic.",
@@ -220,7 +239,7 @@ Map<String, Map<String, dynamic>> disasterDetails = {
 
   'Flood': {
     'causes':
-        "Floods occur when excessive water overflows onto normally dry land. They can be triggered by both natural and human activities. Common causes include:\n\n- **Heavy Rainfall**: Prolonged or intense rain can overwhelm drainage systems and rivers, causing flooding.\n- **Cyclones and Hurricanes**: These storms bring heavy rainfall and storm surges, flooding coastal areas.\n- **Dam Failures**: Structural weaknesses or excessive water pressure can cause dams to break, releasing massive amounts of water.\n- **Deforestation**: Loss of trees reduces water absorption, increasing runoff and the risk of flash floods.\n- **Urbanization**: Concrete surfaces prevent water absorption, causing water to accumulate rapidly.\n- **Glacial Melting**: Climate change accelerates glacier melting, leading to rising water levels and floods in nearby regions.\n\nFloods can cause severe destruction, including loss of life, water contamination, building collapses, and landslides. Low-lying areas and regions near rivers are at the highest risk.",
+    "Floods occur when excessive water overflows onto normally dry land. They can be triggered by both natural and human activities. Common causes include:\n\n- **Heavy Rainfall**: Prolonged or intense rain can overwhelm drainage systems and rivers, causing flooding.\n- **Cyclones and Hurricanes**: These storms bring heavy rainfall and storm surges, flooding coastal areas.\n- **Dam Failures**: Structural weaknesses or excessive water pressure can cause dams to break, releasing massive amounts of water.\n- **Deforestation**: Loss of trees reduces water absorption, increasing runoff and the risk of flash floods.\n- **Urbanization**: Concrete surfaces prevent water absorption, causing water to accumulate rapidly.\n- **Glacial Melting**: Climate change accelerates glacier melting, leading to rising water levels and floods in nearby regions.\n\nFloods can cause severe destruction, including loss of life, water contamination, building collapses, and landslides. Low-lying areas and regions near rivers are at the highest risk.",
     'do': [
       "Stay updated with weather forecasts and flood warnings.",
       "Move valuables and important documents to higher levels in your home.",
@@ -245,7 +264,7 @@ Map<String, Map<String, dynamic>> disasterDetails = {
   },
   'Cyclone': {
     'causes':
-        "Cyclones, also known as hurricanes or typhoons in different regions, are powerful storms that form over warm ocean waters. They develop due to:\n\n- **Warm Ocean Temperatures**: Cyclones require sea surface temperatures of at least 26.5°C to fuel their growth.\n- **Low-Pressure Systems**: Warm, moist air rises, creating a low-pressure zone. As more air rushes in, the system intensifies.\n- **Coriolis Effect**: The Earth's rotation causes the cyclone to spin, with counterclockwise rotation in the Northern Hemisphere and clockwise in the Southern Hemisphere.\n- **Moisture and Wind Conditions**: Cyclones thrive when there is minimal wind shear (abrupt changes in wind speed and direction).\n- **Climate Change**: Rising ocean temperatures and unpredictable weather patterns have increased cyclone frequency and intensity.\n\nCyclones bring extreme winds, heavy rainfall, storm surges, and coastal flooding, causing massive destruction to homes, infrastructure, and agriculture.",
+    "Cyclones, also known as hurricanes or typhoons in different regions, are powerful storms that form over warm ocean waters. They develop due to:\n\n- **Warm Ocean Temperatures**: Cyclones require sea surface temperatures of at least 26.5°C to fuel their growth.\n- **Low-Pressure Systems**: Warm, moist air rises, creating a low-pressure zone. As more air rushes in, the system intensifies.\n- **Coriolis Effect**: The Earth's rotation causes the cyclone to spin, with counterclockwise rotation in the Northern Hemisphere and clockwise in the Southern Hemisphere.\n- **Moisture and Wind Conditions**: Cyclones thrive when there is minimal wind shear (abrupt changes in wind speed and direction).\n- **Climate Change**: Rising ocean temperatures and unpredictable weather patterns have increased cyclone frequency and intensity.\n\nCyclones bring extreme winds, heavy rainfall, storm surges, and coastal flooding, causing massive destruction to homes, infrastructure, and agriculture.",
     'do': [
       "Stay updated with weather reports and cyclone warnings.",
       "Reinforce windows and doors, and secure loose outdoor objects.",
@@ -271,7 +290,7 @@ Map<String, Map<String, dynamic>> disasterDetails = {
   },
   'Fire Safety': {
     'causes':
-        "Fires can start due to various reasons, often resulting in severe damage and loss of life. The common causes include:\n\n- **Electrical Faults**: Short circuits, overloaded outlets, and faulty wiring can spark fires.\n- **Gas Leaks**: Leaking LPG or natural gas can ignite when exposed to flames or sparks.\n- **Unattended Cooking**: Leaving food unattended on a stove is a leading cause of house fires.\n- **Flammable Materials**: Improper storage of gasoline, alcohol, or chemicals can lead to fire hazards.\n- **Smoking & Open Flames**: Cigarettes, candles, and incense can ignite flammable objects.\n- **Wildfires**: Dry weather, lightning strikes, or human activities like campfires and discarded cigarettes can cause large-scale wildfires.\n- **Arson**: Deliberate acts of fire-setting lead to significant property and environmental damage.\n\nFires spread rapidly, consuming oxygen and releasing toxic smoke, making escape difficult. They can cause burns, asphyxiation, and structural collapses.",
+    "Fires can start due to various reasons, often resulting in severe damage and loss of life. The common causes include:\n\n- **Electrical Faults**: Short circuits, overloaded outlets, and faulty wiring can spark fires.\n- **Gas Leaks**: Leaking LPG or natural gas can ignite when exposed to flames or sparks.\n- **Unattended Cooking**: Leaving food unattended on a stove is a leading cause of house fires.\n- **Flammable Materials**: Improper storage of gasoline, alcohol, or chemicals can lead to fire hazards.\n- **Smoking & Open Flames**: Cigarettes, candles, and incense can ignite flammable objects.\n- **Wildfires**: Dry weather, lightning strikes, or human activities like campfires and discarded cigarettes can cause large-scale wildfires.\n- **Arson**: Deliberate acts of fire-setting lead to significant property and environmental damage.\n\nFires spread rapidly, consuming oxygen and releasing toxic smoke, making escape difficult. They can cause burns, asphyxiation, and structural collapses.",
     'do': [
       "Install smoke detectors and check them regularly.",
       "Keep fire extinguishers at home, especially in kitchens and garages.",

@@ -72,7 +72,7 @@ class _CommunityPageState extends State<CommunityPage> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Text(
+                          TranslatableText(
                             postAuthor,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _CommunityPageState extends State<CommunityPage> {
                       const SizedBox(height: 10),
 
                       // Post Content
-                      Text(postContent, style: const TextStyle(fontSize: 15)),
+                      TranslatableText(postContent, style: const TextStyle(fontSize: 15)),
 
                       const SizedBox(height: 10),
 
@@ -106,8 +106,8 @@ class _CommunityPageState extends State<CommunityPage> {
                             },
                             errorBuilder:
                                 (context, error, stackTrace) => const Center(
-                                  child: Icon(Icons.error, color: Colors.red),
-                                ),
+                              child: Icon(Icons.error, color: Colors.red),
+                            ),
                           ),
                         ),
 
@@ -125,7 +125,7 @@ class _CommunityPageState extends State<CommunityPage> {
                                 color: Colors.blue,
                                 onPressed: () => _likePost(postId, likes),
                               ),
-                              Text(
+                              TranslatableText(
                                 "$likes Likes",
                                 style: const TextStyle(
                                   fontSize: 14,
