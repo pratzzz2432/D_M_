@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:d_m/app/common/widgets/common_scaffold.dart';
 import 'package:d_m/app/common/widgets/language_selection_dialog.dart';
 import 'package:d_m/app/common/widgets/translatable_text.dart';
+import 'package:d_m/widgets/active_disaster_card.dart';
 
 import 'package:d_m/app/modules/user_marketplace.dart'; // Make sure this path is correct
 
@@ -30,6 +31,19 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
   @override
   void initState() {
     super.initState();
+    _initializeDashboardData();
+  }
+
+  Future<void> _initializeDashboardData() async {
+    // Attempt to get location and FCM token first.
+    // This will populate LocationService.currentCity and LocationService.currentPosition
+    try {
+      await LocationService.requestLocationAndFCM();
+    } catch (e) {
+      print("Error initializing location/FCM in dashboard: $e");
+      // Decide if you want to set an error message for the whole dashboard here
+    }
+    // Then fetch weather data, which might use LocationService.currentCity
     _fetchWeatherData();
   }
 
@@ -223,69 +237,7 @@ class _CivilianDashboardViewState extends State<CivilianDashboardView> {
                 ),
 
                 // ACTIVE DISASTER SECTION
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.orange[100],
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.emergency,
-                        color: Colors.orange[900],
-                        size: 32,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TranslatableText(
-                              'Active Disaster',
-                              style: TextStyle(
-                                color: Colors.orange[900],
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            TranslatableText(
-                              'Earthquake - Magnitude 6.2',
-                              style: TextStyle(
-                                color: Colors.orange[800],
-                                fontSize: 14,
-                              ),
-                            ),
-                            TranslatableText(
-                              'Location: Manipur, Imphal',
-                              style: TextStyle(
-                                color: Colors.orange[700],
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.orange[700],
-                        size: 16,
-                      ),
-                    ],
-                  ),
-                ),
+                const ActiveDisasterCard(),
 
                 // COMMUNITY SECTION
                 Expanded(

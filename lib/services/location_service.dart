@@ -5,6 +5,7 @@ import 'package:geocoding/geocoding.dart';
 
 class LocationService {
   static String? _currentCity;
+  static Position? _currentPosition;
 
   static Future<void> requestLocationAndFCM() async {
     bool serviceEnabled;
@@ -36,6 +37,7 @@ class LocationService {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
+    _currentPosition = position;
 
     // Convert coordinates to city name
     List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -51,14 +53,20 @@ class LocationService {
     print("FCM Token: $token");
 
     if (token != null) {
-      // Store user location and FCM token in Firestore
-      await FirebaseFirestore.instance.collection('users').doc(token).set({
+      Map<String, dynamic> userData = {
         'token': token,
         'city': city,
-      });
-      print("Stored location and FCM token in Firestore.");
+      };
+      if (_currentPosition != null) {
+        userData['latitude'] = _currentPosition!.latitude;
+        userData['longitude'] = _currentPosition!.longitude;
+      }
+      // Store user location and FCM token in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(token).set(userData);
+      print("Stored location, FCM token, and coordinates in Firestore.");
     }
   }
 
   static String? get currentCity => _currentCity;
+  static Position? get currentPosition => _currentPosition;
 }
