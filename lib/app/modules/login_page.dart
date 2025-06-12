@@ -139,10 +139,14 @@ class LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
+<<<<<<< HEAD
             padding: const EdgeInsets.symmetric(
               horizontal: 24,
               vertical: 32,
             ), // Added vertical padding
+=======
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32), // Added vertical padding
+>>>>>>> 04379b7caa9fa3c2acf4c7ff745599268898d3bd
             child: Card(
               elevation: 12,
               shape: RoundedRectangleBorder(
@@ -152,9 +156,13 @@ class LoginPageState extends State<LoginPage> {
               child: Padding(
                 padding: const EdgeInsets.all(32),
                 child: Column(
+<<<<<<< HEAD
                   mainAxisSize:
                       MainAxisSize
                           .min, // Keep mainAxisSize.min to allow content to size itself
+=======
+                  mainAxisSize: MainAxisSize.min, // Keep mainAxisSize.min to allow content to size itself
+>>>>>>> 04379b7caa9fa3c2acf4c7ff745599268898d3bd
                   children: [
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -171,9 +179,13 @@ class LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 20),
                     Center(
                       child: TranslatableText(
+<<<<<<< HEAD
                         _isLoginMode
                             ? 'Welcome to Aapda-Sanrakshan'
                             : 'Create Your Account',
+=======
+                        _isLoginMode ? 'Welcome to Aapda-Sanrakshan' : 'Create Your Account',
+>>>>>>> 04379b7caa9fa3c2acf4c7ff745599268898d3bd
                         style: const TextStyle(
                           color: Color(0xFF5F6898),
                           fontSize: 24,
@@ -185,6 +197,7 @@ class LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 30),
                     _buildTextField(_emailController, "Email"),
                     const SizedBox(height: 20),
+<<<<<<< HEAD
                     _buildTextField(
                       _passwordController,
                       "Password",
@@ -233,15 +246,65 @@ class LoginPageState extends State<LoginPage> {
                         style: const TextStyle(color: Color(0xFF5F6898)),
                       ),
                     ),
+=======
+                    _buildTextField(_passwordController, "Password", isPassword: true),
+                    const SizedBox(height: 30),
+                    _isLoading
+                        ? CircularProgressIndicator(
+                      color: const Color(0xFF5F6898),
+                    )
+                        : SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _isLoginMode ? _signIn : _signUp,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF5F6898),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 4,
+                        ),
+                        child: TranslatableText(
+                          _isLoginMode ? "LOGIN" : "SIGN UP",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _isLoginMode = !_isLoginMode;
+                          // Clear any previous errors when switching modes
+                          ScaffoldMessenger.of(context).clearSnackBars();
+                        });
+                      },
+                      child: TranslatableText(
+                        _isLoginMode
+                            ? "Don't have an account? Sign Up"
+                            : "Already have an account? Login",
+                        style: const TextStyle(color: Color(0xFF5F6898)),
+                      ),
+                    ),
+>>>>>>> 04379b7caa9fa3c2acf4c7ff745599268898d3bd
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
                         // TODO: Implement password reset functionality
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
+<<<<<<< HEAD
                             content: TranslatableText(
                               'Password reset feature coming soon!',
                             ),
+=======
+                            content: TranslatableText('Password reset feature coming soon!'),
+>>>>>>> 04379b7caa9fa3c2acf4c7ff745599268898d3bd
                             backgroundColor: Colors.orange,
                           ),
                         );
@@ -283,6 +346,7 @@ class LoginPageState extends State<LoginPage> {
         ),
         filled: true,
         fillColor: Colors.white,
+<<<<<<< HEAD
         suffixIcon:
             isPassword
                 ? IconButton(
@@ -297,6 +361,21 @@ class LoginPageState extends State<LoginPage> {
                   },
                 )
                 : null,
+=======
+        suffixIcon: isPassword
+            ? IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.visibility : Icons.visibility_off,
+            color: const Color(0xFF5F6898),
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
+        )
+            : null,
+>>>>>>> 04379b7caa9fa3c2acf4c7ff745599268898d3bd
       ),
     );
   }
