@@ -5,12 +5,18 @@ import 'package:d_m/app/data/models/cyclone_prediction_response.dart';
 import 'package:d_m/app/data/models/earthquake_prediction_response.dart';
 
 class DisasterService {
-  static const String _floodApiBaseUrl = 'https://flood-api-756506665902.us-central1.run.app';
-  static const String _cycloneApiBaseUrl = 'https://cyclone-api-756506665902.asia-south1.run.app';
+  static const String _floodApiBaseUrl =
+      'https://flood-api-756506665902.us-central1.run.app';
+  static const String _cycloneApiBaseUrl =
+      'https://cyclone-api-756506665902.asia-south1.run.app';
   // Note: The issue mentions '/docs' for earthquake, but the curl example doesn't. Using the base URL as per the curl.
-  static const String _earthquakeApiUrl = 'https://my-python-app-wwb655aqwa-uc.a.run.app/';
+  static const String _earthquakeApiUrl =
+      'https://my-fastapi-app-wwb655aqwa-uc.a.run.app/';
 
-  Future<FloodPredictionResponse> getFloodPrediction(double lat, double lon) async {
+  Future<FloodPredictionResponse> getFloodPrediction(
+    double lat,
+    double lon,
+  ) async {
     final url = Uri.parse('$_floodApiBaseUrl/predict');
     try {
       final response = await http.post(
@@ -23,7 +29,9 @@ class DisasterService {
         return FloodPredictionResponse.fromJson(jsonDecode(response.body));
       } else {
         print('Flood API Error: ${response.statusCode} ${response.body}');
-        throw Exception('Failed to load flood prediction. Status Code: ${response.statusCode}');
+        throw Exception(
+          'Failed to load flood prediction. Status Code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       print('Flood API Exception: $e');
@@ -31,7 +39,10 @@ class DisasterService {
     }
   }
 
-  Future<CyclonePredictionResponse> getCyclonePrediction(double lat, double lon) async {
+  Future<CyclonePredictionResponse> getCyclonePrediction(
+    double lat,
+    double lon,
+  ) async {
     final url = Uri.parse('$_cycloneApiBaseUrl/predict');
     try {
       final response = await http.post(
@@ -44,7 +55,9 @@ class DisasterService {
         return CyclonePredictionResponse.fromJson(jsonDecode(response.body));
       } else {
         print('Cyclone API Error: ${response.statusCode} ${response.body}');
-        throw Exception('Failed to load cyclone prediction. Status Code: ${response.statusCode}');
+        throw Exception(
+          'Failed to load cyclone prediction. Status Code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       print('Cyclone API Exception: $e');
@@ -61,7 +74,9 @@ class DisasterService {
         return EarthquakePredictionResponse.fromJson(jsonDecode(response.body));
       } else {
         print('Earthquake API Error: ${response.statusCode} ${response.body}');
-        throw Exception('Failed to load earthquake prediction. Status Code: ${response.statusCode}');
+        throw Exception(
+          'Failed to load earthquake prediction. Status Code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       print('Earthquake API Exception: $e');
