@@ -15,18 +15,25 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
   final String _collectionName = 'government_marketplace_items';
 
   String _selectedCategory = 'All';
-  final List<String> _categories = ['All', 'Water & Food', 'Medical', 'Electronics', 'Shelter', 'Tools', 'Clothing', 'Communication'];
+  final List<String> _categories = [
+    'All',
+    'Water & Food',
+    'Medical',
+    'Electronics',
+    'Shelter',
+    'Tools',
+    'Clothing',
+    'Communication'
+  ];
 
-  // Cart to store selected items (in real app, you might want to use a state management solution)
   Map<String, Map<String, dynamic>> _cart = {};
-
   bool _isLoading = false;
 
-  // Add item to cart
   void _addToCart(String itemId, Map<String, dynamic> item) {
     setState(() {
       if (_cart.containsKey(itemId)) {
-        _cart[itemId]!['cartQuantity'] = (_cart[itemId]!['cartQuantity'] as int) + 1;
+        _cart[itemId]!['cartQuantity'] =
+            (_cart[itemId]!['cartQuantity'] as int) + 1;
       } else {
         _cart[itemId] = {
           ...item,
@@ -39,18 +46,18 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: TranslatableText('${item['name']} added to cart'),
-        backgroundColor: Color(0xFF5F6898),
+        backgroundColor: const Color(0xFF5F6898),
         duration: const Duration(seconds: 1),
       ),
     );
   }
 
-  // Remove item from cart
   void _removeFromCart(String itemId) {
     setState(() {
       if (_cart.containsKey(itemId)) {
         if (_cart[itemId]!['cartQuantity'] > 1) {
-          _cart[itemId]!['cartQuantity'] = (_cart[itemId]!['cartQuantity'] as int) - 1;
+          _cart[itemId]!['cartQuantity'] =
+              (_cart[itemId]!['cartQuantity'] as int) - 1;
         } else {
           _cart.remove(itemId);
         }
@@ -58,7 +65,6 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     });
   }
 
-  // Get total cart amount
   double _getTotalAmount() {
     double total = 0;
     _cart.forEach((key, item) {
@@ -70,7 +76,6 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     return total;
   }
 
-  // Get total cart items
   int _getTotalCartItems() {
     int total = 0;
     _cart.forEach((key, item) {
@@ -79,7 +84,6 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     return total;
   }
 
-  // Show cart details
   void _showCart() {
     showModalBottomSheet(
       context: context,
@@ -97,7 +101,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                     children: [
                       const TranslatableText(
                         'Your Cart',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       IconButton(
                         onPressed: () => Navigator.pop(context),
@@ -106,14 +111,14 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                     ],
                   ),
                   const Divider(),
-
                   if (_cart.isEmpty)
                     const Expanded(
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.shopping_cart_outlined, size: 64, color: Color(0xFF5F6898)),
+                            Icon(Icons.shopping_cart_outlined,
+                                size: 64, color: Color(0xFF5F6898)),
                             SizedBox(height: 16),
                             TranslatableText(
                               'Your cart is empty',
@@ -134,14 +139,16 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                           return Card(
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: Color(0xFF5F6898),
+                                backgroundColor: const Color(0xFF5F6898),
                                 child: Text(
                                   (item['name'] ?? 'N')[0].toUpperCase(),
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ),
-                              title: TranslatableText(item['name'] ?? 'Unknown Item'),
-                              subtitle: TranslatableText('₹${_getPriceAsString(item['price'] ?? 0)} each'),
+                              title: TranslatableText(
+                                  item['name'] ?? 'Unknown Item'),
+                              subtitle: TranslatableText(
+                                  '₹${_getPriceAsString(item['price'] ?? 0)} each'),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -151,7 +158,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                                       setModalState(() {});
                                       setState(() {});
                                     },
-                                    icon: const Icon(Icons.remove_circle, color: Colors.red),
+                                    icon: const Icon(Icons.remove_circle,
+                                        color: Colors.red),
                                   ),
                                   TranslatableText('${item['cartQuantity']}'),
                                   IconButton(
@@ -160,7 +168,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                                       setModalState(() {});
                                       setState(() {});
                                     },
-                                    icon: const Icon(Icons.add_circle, color: Color(0xFF5F6898)),
+                                    icon: const Icon(Icons.add_circle,
+                                        color: Color(0xFF5F6898)),
                                   ),
                                 ],
                               ),
@@ -169,7 +178,6 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                         },
                       ),
                     ),
-
                   if (_cart.isNotEmpty) ...[
                     const Divider(),
                     Padding(
@@ -179,11 +187,15 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                         children: [
                           const TranslatableText(
                             'Total Amount:',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           TranslatableText(
                             '₹${_getTotalAmount().toStringAsFixed(2)}',
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF5F6898)),
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF5F6898)),
                           ),
                         ],
                       ),
@@ -193,7 +205,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                       child: ElevatedButton(
                         onPressed: _proceedToCheckout,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF5F6898),
+                          backgroundColor: const Color(0xFF5F6898),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                         child: const TranslatableText(
@@ -212,9 +224,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     );
   }
 
-  // Proceed to checkout (placeholder)
   void _proceedToCheckout() {
-    Navigator.pop(context); // Close cart modal
+    Navigator.pop(context);
 
     showDialog(
       context: context,
@@ -227,7 +238,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
             const TranslatableText('Your order has been placed successfully!'),
             const SizedBox(height: 10),
             TranslatableText('Total Items: ${_getTotalCartItems()}'),
-            TranslatableText('Total Amount: ₹${_getTotalAmount().toStringAsFixed(2)}'),
+            TranslatableText(
+                'Total Amount: ₹${_getTotalAmount().toStringAsFixed(2)}'),
             const SizedBox(height: 10),
             const TranslatableText(
               'You will receive a confirmation message shortly.',
@@ -240,7 +252,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
             onPressed: () {
               Navigator.pop(context);
               setState(() {
-                _cart.clear(); // Clear cart after successful order
+                _cart.clear();
               });
             },
             child: const Text('OK'),
@@ -255,7 +267,7 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     return Scaffold(
       appBar: AppBar(
         title: const TranslatableText("Government Marketplace"),
-        backgroundColor: Color(0xFF5F6898),
+        backgroundColor: const Color(0xFF5F6898),
         actions: [
           Stack(
             children: [
@@ -294,7 +306,6 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
       ),
       body: Column(
         children: [
-          // Category Filter
           Container(
             height: 50,
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -316,21 +327,17 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                       });
                     },
                     backgroundColor: Colors.grey[200],
-                    selectedColor: Color(0xFF5F6898),
-                    checkmarkColor: Color(0xFF5F6898),
+                    selectedColor: const Color(0xFF5F6898),
+                    checkmarkColor: Colors.white, // Changed checkmark color for better visibility
                   ),
                 );
               },
             ),
           ),
-
-          // Items Grid
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: _selectedCategory == 'All'
-                  ? _firestore
-                  .collection(_collectionName)
-                  .snapshots()
+                  ? _firestore.collection(_collectionName).snapshots()
                   : _firestore
                   .collection(_collectionName)
                   .where('category', isEqualTo: _selectedCategory)
@@ -358,7 +365,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.store_outlined, size: 64, color: Colors.grey),
+                        Icon(Icons.store_outlined,
+                            size: 64, color: Colors.grey),
                         SizedBox(height: 16),
                         TranslatableText(
                           'No items available',
@@ -376,7 +384,6 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
 
                 final items = snapshot.data!.docs;
 
-                // Filter items with quantity > 0 (available items)
                 final availableItems = items.where((doc) {
                   final item = doc.data() as Map<String, dynamic>;
                   return (item['quantity'] ?? 0) > 0;
@@ -387,7 +394,8 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.store_outlined, size: 64, color: Colors.grey),
+                        Icon(Icons.store_outlined,
+                            size: 64, color: Colors.grey),
                         SizedBox(height: 16),
                         TranslatableText(
                           'No items available in stock',
@@ -409,7 +417,9 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    childAspectRatio: 0.75,
+                    // Adjusted childAspectRatio to be more accommodating for taller cards
+                    // A smaller ratio means the item is taller relative to its width.
+                    childAspectRatio: 0.65, // Adjust this value as needed
                   ),
                   itemCount: availableItems.length,
                   itemBuilder: (context, index) {
@@ -423,82 +433,96 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Item Image Placeholder
-                          Container(
-                            height: 120,
-                            width: double.infinity,
-                            color: Colors.grey[200],
-                            child: Icon(
-                              _getCategoryIcon(item['category']),
-                              size: 40,
-                              color: Colors.grey[600],
+                          // Using Expanded here to allow the image placeholder to fill available space
+                          // within its flex constraints. This will help if images were real.
+                          Expanded(
+                            flex: 3, // Give more flex to the image placeholder
+                            child: Container(
+                              width: double.infinity,
+                              color: Colors.grey[200],
+                              child: Icon(
+                                _getCategoryIcon(item['category']),
+                                size: 40,
+                                color: Colors.grey[600],
+                              ),
                             ),
                           ),
 
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TranslatableText(
-                                  item['name'] ?? 'Unknown Item',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                TranslatableText(
-                                  '₹${_getPriceAsString(item['price'] ?? 0)}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF5F6898),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                TranslatableText(
-                                  'Stock: ${item['quantity'] ?? 0}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                if ((item['description'] ?? '').isNotEmpty &&
-                                    item['description'] != 'No description available') ...[
-                                  const SizedBox(height: 4),
+                          // Item Details
+                          Expanded(
+                            flex: 5, // Give more flex to the text details
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribute space
+                                children: [
                                   TranslatableText(
-                                    item['description'],
+                                    item['name'] ?? 'Unknown Item',
                                     style: const TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ],
-                                const SizedBox(height: 8),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: (item['quantity'] ?? 0) > 0
-                                        ? () => _addToCart(itemId, item)
-                                        : null,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF5F6898),
-                                      padding: const EdgeInsets.symmetric(vertical: 8),
+                                  const SizedBox(height: 4),
+                                  TranslatableText(
+                                    '₹${_getPriceAsString(item['price'] ?? 0)}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF5F6898),
                                     ),
-                                    child: TranslatableText(
-                                      (item['quantity'] ?? 0) > 0 ? 'Add to Cart' : 'Out of Stock',
+                                  ),
+                                  const SizedBox(height: 4),
+                                  TranslatableText(
+                                    'Stock: ${item['quantity'] ?? 0}',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  if ((item['description'] ?? '').isNotEmpty &&
+                                      item['description'] !=
+                                          'No description available') ...[
+                                    const SizedBox(height: 4),
+                                    TranslatableText(
+                                      item['description'],
                                       style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
+                                        fontSize: 11,
+                                        color: Colors.grey,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                  const Spacer(), // Pushes the button to the bottom
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      onPressed: (item['quantity'] ?? 0) > 0
+                                          ? () => _addToCart(itemId, item)
+                                          : null,
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                        const Color(0xFF5F6898),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8),
+                                      ),
+                                      child: TranslatableText(
+                                        (item['quantity'] ?? 0) > 0
+                                            ? 'Add to Cart'
+                                            : 'Out of Stock',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -514,7 +538,6 @@ class _UserMarketplacePageState extends State<UserMarketplacePage> {
     );
   }
 
-  // Helper method to handle price formatting
   String _getPriceAsString(dynamic price) {
     if (price is int) {
       return price.toString();
